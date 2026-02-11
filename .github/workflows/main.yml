@@ -5,26 +5,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Flet
-        run: pip install flet requests
+      - name: Install Dependencies
+        run: |
+          pip install flet requests
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0'
 
-      - name: Build APK
-        run: flet build apk --verbose
+      - name: Build Android APK
+        run: |
+          flet build apk --verbose
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
+      - name: Upload APK Result
+        uses: actions/upload-artifact@v4
         with:
-          name: CrownAPK-Final
+          name: CrownWinTricks-APK
           path: build/apk/app-release.apk
