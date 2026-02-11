@@ -1,0 +1,32 @@
+name: Build APK
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install flet requests
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Build Android APK
+        run: |
+          flet build apk --verbose
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: CrownTricks-APK
+          path: build/apk/app-release.apk
